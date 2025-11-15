@@ -13,141 +13,164 @@ class GerenciadorDadosImagem {
 	public GerenciadorDadosImagem() {}
 
 	/**
-	 * 
-	 * @param largura
-	 * @param altura
-	 * @return
+	 * Gera uma imagem com todos os valores de cor zerados.
+	 * @param largura largura desejada.
+	 * @param altura altura desejada.
+	 * @return {@code Imagem} criada.
 	 */
-	public Pixel[][] gerarEstruturaImagem(int largura, int altura) {
+	public Imagem gerarImagem(int largura, int altura) {
 		if (largura <= 0 || altura <= 0) {
 			throw new IllegalArgumentException(
 				"Os valores de altura e largura fornecidos são inválidos"
 			);
 		}
 
-		Pixel[][] dadosImagem = new Pixel[altura][largura];
+		Imagem img = new Imagem(altura, largura);
+
 		for (int y = 0; y < altura; y++) {
 			for (int x = 0; x < largura; x++) {
-				dadosImagem[y][x] = new Pixel(0, 0, 0);
+				img.set(x, y, 0, 0, 0);
 			}
 		}
 
-		return dadosImagem;
+		return img;
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @return
+	 * Gera uma imagem a partir de uma BufferedImage.
+	 * @param img imagem base.
+	 * @return {@code Imagem} criada.
 	 */
-	public Pixel[][] gerarEstruturaImagem(BufferedImage imagem) {
-		if (imagem == null) throw new IllegalArgumentException("A imagem fornecida é nula.");
-		if (imagem.getWidth() <= 0) throw new IllegalArgumentException("A largura da imagem não pode ser menor ou igual a zero.");
-		if (imagem.getHeight() <= 0) throw new IllegalArgumentException("A altura da imagem não pode ser menor ou igual a zero.");
+	public Imagem gerarImagem(BufferedImage img) {
+		if (img == null) {
+			throw new IllegalArgumentException("A imagem fornecida é nula.");
+		}
+		if (img.getWidth() < 1) {
+			throw new IllegalArgumentException("A largura da imagem não pode ser menor ou igual a zero.");
+		}
+		if (img.getHeight() < 1) {
+			throw new IllegalArgumentException("A altura da imagem não pode ser menor ou igual a zero.");
+		}
 		
-		//dimensões da imagem
-		int largura = imagem.getWidth();
-		int altura = imagem.getHeight();
-		Pixel[][] dadosImagem = new Pixel[altura][largura];
+		int largura = img.getWidth();
+		int altura = img.getHeight();
+		Imagem imagem = new Imagem(altura, largura);
+
 		for (int y = 0; y < altura; y++) {         
 			for (int x = 0; x < largura; x++) {
-				dadosImagem[y][x] = new Pixel();
-				dadosImagem[y][x].setR(this.getR(imagem, x, y));
-				dadosImagem[y][x].setG(this.getG(imagem, x, y));
-				dadosImagem[y][x].setB(this.getB(imagem, x, y));
-			}
+				imagem.set(
+					x, 
+					y,
+					getR(img, x, y),
+					getG(img, x, y),
+					getB(img, x, y)
+				);}
 		}
 
-		return dadosImagem;
+		return imagem;
 	}
 
 	/**
-	 * 
-	 * @param estruturaImagem
-	 * @param x
-	 * @param y
-	 * @param r
-	 * @param g
-	 * @param b
+	 * Altera o valor rbg de um pixel específico da imagem.
+	 * @param img {@code Imagem} base.
+	 * @param x posição vertical.
+	 * @param y posição horizontal.
+     * @param r intensidade da cor vermelha.
+     * @param g intensidade da cor verde.
+     * @param b intensidade da cor azul.
 	 */
-	public void setCor(Pixel[][] estruturaImagem, int x, int y, int r, int g, int b){
-		if (estruturaImagem == null) throw new IllegalArgumentException("A estrutura da imagem é nula");   
-		if (y < 0 || y > estruturaImagem.length) {
-			throw new IllegalArgumentException("O valor x de fornecido está fora de alcance.");
+	public void setCor(Imagem img, int x, int y, int r, int g, int b) {
+		if (img == null) {
+			throw new IllegalArgumentException("A estrutura da imagem é nula");
 		}
-		if (x < 0 || x > estruturaImagem[0].length) {
+		if (x < 0 || x > img.largura()) {
 			throw new IllegalArgumentException("O valor y de fornecido está fora de alcance.");
 		}
+		if (y < 0 || y >= img.altura()) {
+			throw new IllegalArgumentException("O valor x de fornecido está fora de alcance.");
+		}
 
-		estruturaImagem[y][x].setRGB(r, g, b);
+		img.set(x, y, r, g, b);
 	}
 
-	public void preencher(Pixel[][] estrutura, int r, int g, int b) {
-		for (int i = 0; i < estrutura.length; i++) {
-			for (int j = 0; j < estrutura[i].length; j++) {
-				estrutura[i][j].setRGB(r, g, b);
+	/**
+	 * Preenche todo o conteúdo da imagem usando uma configuração RBG.
+	 * @param img {@code Imagem} base.
+     * @param r intensidade da cor vermelha.
+     * @param g intensidade da cor verde.
+     * @param b intensidade da cor azul.
+	 */
+	public void preencher(Imagem img, int r, int g, int b) {
+		for (int y = 0; y < img.altura(); y++) {
+			for (int x = 0; x < img.largura(); x++) {
+				img.set(x, y, r, g, b);
 			}
 		}
 	}
 
-	public int[][] getVermelho(BufferedImage imagem) {
+	/**
+	 * Retorna os dados de cor vermelha para todos os pixels da imagem.
+	 * @param imagem imagem base.
+	 * @return valores de cor vermelha.
+	 */
+	public int[][] getR(BufferedImage imagem) {
 		int largura = imagem.getWidth();
 		int altura = imagem.getHeight();
 
-		int[][] vermelho = new int[altura][largura];
+		int[][] r = new int[altura][largura];
 		for(int y = 0; y < altura; y++){
 			for(int x = 0; x < largura; x++){
-				vermelho[y][x] = getR(imagem, x, y);
+				r[y][x] = getR(imagem, x, y);
 			}
 		}
 
-		return vermelho;
+		return r;
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @return
+	 * Retorna os dados de cor verde para todos os pixels da imagem.
+	 * @param imagem imagem base.
+	 * @return valores de cor verde.
 	 */
-	public int[][] getVerde(BufferedImage imagem) {
+	public int[][] getG(BufferedImage imagem) {
 		int largura = imagem.getWidth();
 		int altura = imagem.getHeight();
 
-		int[][] verde = new int[altura][largura];
+		int[][] g = new int[altura][largura];
 		for (int y = 0; y < altura; y++) {
 			for (int x = 0; x < largura; x++) {
-				verde[y][x] = getG(imagem, x, y);
+				g[y][x] = getG(imagem, x, y);
 			}
 		}
 
-		return verde;
+		return g;
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @return
+	 * Retorna os dados de cor azul para todos os pixels da imagem.
+	 * @param imagem imagem base.
+	 * @return valores de cor azul.
 	 */
-	public int[][] getAzul(BufferedImage imagem) {
+	public int[][] getB(BufferedImage imagem) {
 		int largura = imagem.getWidth();
 		int altura = imagem.getHeight();
 
-		int[][] azul = new int[altura][largura];
+		int[][] b = new int[altura][largura];
 		for (int y = 0; y < altura; y++) {
 			for (int x = 0; x < largura; x++) {
-				azul[y][x] = getB(imagem, x, y);
+				b[y][x] = getB(imagem, x, y);
 			}
 		}
 
-		return azul;
+		return b;
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @return
+	 * Retorna os dados de cor em escala de cinza para todos os pixels da imagem.
+	 * @param imagem imagem base.
+	 * @return valores de cor cinza.
 	 */
-	public int[][] getCinza(BufferedImage imagem) {
+	public int[][] getGray(BufferedImage imagem) {
 		int largura = imagem.getWidth();
 		int altura = imagem.getHeight();
 
@@ -166,11 +189,11 @@ class GerenciadorDadosImagem {
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @param x
-	 * @param y
-	 * @return
+	 * Retorna o valor de cor vermelha para um pixel específico da imagem.
+	 * @param imagem imagem base.
+	 * @param x posição vertical.
+	 * @param y posição horizontal.
+	 * @return valor de instensidade da cor vermelha.
 	 */
 	public int getR(BufferedImage imagem, int x, int y) {
 		int rgb = imagem.getRGB(x, y);
@@ -179,11 +202,11 @@ class GerenciadorDadosImagem {
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @param x
-	 * @param y
-	 * @return
+	 * Retorna o valor de cor verde para um pixel específico da imagem.
+	 * @param imagem imagem base.
+	 * @param x posição vertical.
+	 * @param y posição horizontal.
+	 * @return valor de instensidade da cor verde.
 	 */
 	public int getG(BufferedImage imagem, int x, int y) {
 		int rgb = imagem.getRGB(x, y);
@@ -192,11 +215,11 @@ class GerenciadorDadosImagem {
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @param x
-	 * @param y
-	 * @return
+	 * Retorna o valor de cor azul para um pixel específico da imagem.
+	 * @param imagem imagem base.
+	 * @param x posição vertical.
+	 * @param y posição horizontal.
+	 * @return valor de instensidade da cor azul.
 	 */
 	public int getB(BufferedImage imagem, int x, int y) {
 		int rgb = imagem.getRGB(x, y);
@@ -205,16 +228,16 @@ class GerenciadorDadosImagem {
 	}
 
 	/**
-	 * 
-	 * @param imagem
-	 * @return
+	 * Retorna um conjunto contendo os valores rgb para cada pixel da imagem.
+	 * @param imagem imagem base.
+	 * @return conjunto de dados.
 	 */
 	public int[][] getDadosImagem(BufferedImage imagem) {
 		int largura = imagem.getWidth();
 		int altura = imagem.getHeight();
-		int informacoes = 1 + 1 + 3;// x + y + r + g + b
+		int info = 1 + 1 + 3;// x + y + r + g + b
 		
-		int[][] dados = new int[largura*altura][informacoes];
+		int[][] dados = new int[largura*altura][info];
 		
 		for (int y = 0; y < largura; y++) {
 			for (int x = 0; x < altura; x++) {
@@ -234,79 +257,4 @@ class GerenciadorDadosImagem {
 		return dados;
 	}
 
-	/**
-	 * 
-	 * @param imagem
-	 * @return
-	 */
-	public double[][] imagemParaDadosTreinoEscalaCinza(BufferedImage imagem) {
-		if (imagem == null) throw new IllegalArgumentException("A imagem fornecida é nula.");
-
-		int larguraImagem = imagem.getWidth();
-		int alturaImagem = imagem.getHeight();
-
-		double[][] dadosImagem = new double[larguraImagem * alturaImagem][3];
-
-		int contador = 0;
-		for (int y = 0; y < alturaImagem; y++) {
-			for (int x = 0; x < larguraImagem; x++) {
-				int r = this.getR(imagem, x, y);
-				int g = this.getG(imagem, x, y);
-				int b = this.getB(imagem, x, y);
-
-				// preenchendo os dados na matriz
-				double xNormalizado = (double) x / (larguraImagem - 1);
-				double yNormalizado = (double) y / (alturaImagem - 1);
-				double escalaCinza = (r + g + b) / 3.0;
-				
-				dadosImagem[contador][0] = xNormalizado;// x
-				dadosImagem[contador][1] = yNormalizado;// y
-				dadosImagem[contador][2] = escalaCinza;// escala de cinza
-
-				contador++;
-			}
-		}
-
-		return dadosImagem;
-	}
-
-	/**
-	 * 
-	 * @param imagem
-	 * @return
-	 */
-	public double[][] imagemParaDadosTreinoRGB(BufferedImage imagem) {
-		if (imagem == null) throw new IllegalArgumentException("A imagem fornecida é nula.");
-		int larguraImagem = imagem.getWidth();
-		int alturaImagem = imagem.getHeight();
-
-		double[][] dadosImagem = new double[larguraImagem * alturaImagem][5];
-
-		int contador = 0;
-
-		for (int y = 0; y < alturaImagem; y++) {
-			for (int x = 0; x < larguraImagem; x++) {
-				int r = this.getR(imagem, x, y);
-				int g = this.getG(imagem, x, y);
-				int b = this.getB(imagem, x, y);
-
-				// preenchendo os dados na matriz
-				double xNormalizado = (double) x / (larguraImagem-1);
-				double yNormalizado = (double) y / (alturaImagem-1);  
-				double rNormalizado = (double) r / 255;
-				double gNormalizado = (double) g / 255;
-				double bNormalizado = (double) b / 255;
-
-				dadosImagem[contador][0] =  xNormalizado;// x
-				dadosImagem[contador][1] =  yNormalizado;// y
-				dadosImagem[contador][2] = rNormalizado;// vermelho
-				dadosImagem[contador][3] = gNormalizado;// verde
-				dadosImagem[contador][4] = bNormalizado;// azul
-
-				contador++;
-			}
-		}
-
-		return dadosImagem;
-	}
 }

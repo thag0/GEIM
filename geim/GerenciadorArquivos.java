@@ -18,15 +18,15 @@ class GerenciadorArquivos {
 	public GerenciadorArquivos() {}
 
 	/**
-	 * 
-	 * @param caminho
-	 * @return
+	 * Lê um arquivo de imagem.
+	 * @param caminho caminho do arquivo.
+	 * @return imagem lida.
 	 */
 	public BufferedImage lerImagem(String caminho) {
 		File arquivo = new File(caminho);
 		if (!arquivo.exists()) {
 			throw new IllegalArgumentException(
-				"Diretório \"" + caminho + "\" não encontrado."
+				"\nDiretório \"" + caminho + "\" não encontrado."
 			);
 		}
   
@@ -35,48 +35,11 @@ class GerenciadorArquivos {
 		try {
 			img = ImageIO.read(new FileInputStream(arquivo));
 		} catch (IOException e) {
-			System.out.println("Erro ao ler a imagem \"" + caminho + "\"");
+			System.out.println("\nErro ao ler a imagem \"" + caminho + "\"");
 			e.printStackTrace();
 		}
   
 		return img;
 	}
-  
-	/**
-	 * 
-	 * @param estruturaImagem
-	 * @param caminho
-	 */
-	public void exportarPng(Pixel[][] estruturaImagem, String caminho) {
-		int alturaImagem = estruturaImagem.length;
-		int larguraImagem = estruturaImagem[0].length;
-
-		BufferedImage imagem = new BufferedImage(larguraImagem, alturaImagem, BufferedImage.TYPE_INT_RGB);
-
-		int r = 0;
-		int g = 0;
-		int b = 0;
-		int rgb = 0;
-
-		for (int y = 0; y < alturaImagem; y++) {
-			for (int x = 0; x < larguraImagem; x++) {
-				r = estruturaImagem[y][x].getR();
-				g = estruturaImagem[y][x].getG();
-				b = estruturaImagem[y][x].getB();
-
-				rgb = (r << 16) | (g << 8) | b;
-				imagem.setRGB(x, y, rgb);
-			}
-		}
-
-		try {
-			File arquivo = new File((caminho + ".png"));
-			ImageIO.write(imagem, "png", arquivo);
-
-		} catch (Exception e) {
-			System.out.println("Erro ao exportar imagem");
-			e.printStackTrace();
-		}
-	}
-	
+  	
 }
