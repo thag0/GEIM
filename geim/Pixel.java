@@ -1,8 +1,7 @@
 package geim;
 
 /**
- * Classe responsável por representar o valor de cor de um pixel de 
- * acordo com o padrão de cor rgb.
+ * Pixel RGB.
  */
 public class Pixel {
 
@@ -44,9 +43,7 @@ public class Pixel {
     * </p>
     */
    public Pixel() {
-      setR(0);
-      setG(0);
-      setB(0);
+      this(0, 0, 0);
    }
 
    /**
@@ -60,9 +57,8 @@ public class Pixel {
     * @param r novo valor de cor vermelha.
     */
    public void setR(int r) {
-      if(r > 255) this.r = 255;
-      else if(r < 0) this.r = 0;
-      else this.r = r;
+      int val = Math.clamp(r, 0, 255);
+      this.r = val;
    }
 
    /**
@@ -76,9 +72,8 @@ public class Pixel {
     * @param g novo valor de cor verde.
     */
    public void setG(int g) {
-      if(g > 255) this.g = 255;
-      else if(g < 0) this.g = 0;
-      else this.g = g;
+      int val = Math.clamp(g, 0, 255);
+      this.g = val;
    }
 
    /**
@@ -92,9 +87,8 @@ public class Pixel {
     * @param b novo valor de cor azul.
     */
    public void setB(int b) {
-      if(b > 255) this.b = 255;
-      else if(b < 0) this.b = 0;
-      else this.b = b;
+      int val = Math.clamp(b, 0, 255);
+      this.b = val;
    }
 
    /**
@@ -114,7 +108,7 @@ public class Pixel {
     * @return valor de intensidade da cor vermelha do pixel.
     */
    public int getR() {
-      return this.r;
+      return r;
    }
 
    /**
@@ -122,7 +116,7 @@ public class Pixel {
     * @return valor de intensidade da cor verde do pixel.
     */
    public int getG() {
-      return this.g;
+      return g;
    }
 
    /**
@@ -130,7 +124,7 @@ public class Pixel {
     * @return valor de intensidade da cor azul do pixel.
     */
    public int getB() {
-      return this.b;
+      return b;
    }
 
    /**
