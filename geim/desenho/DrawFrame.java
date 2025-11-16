@@ -1,7 +1,8 @@
 package geim.desenho;
 
 import javax.swing.JFrame;
-import geim.Imagem;
+
+import geim.Imagem.Imagem;
 
 public class DrawFrame extends JFrame {
     

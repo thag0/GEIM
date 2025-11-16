@@ -1,8 +1,12 @@
 package geim;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import geim.Imagem.Imagem;
 import geim.desenho.DrawFrame;
+import geim.gerenciadores.GerenciadorArquivos;
+import geim.gerenciadores.GerenciadorDadosImagem;
 
 /**
  * <p>
@@ -45,14 +49,14 @@ public class Geim {
 	 * <p>
 	 *    Todos os valores de cores da imagem serão copiados para a estrutura de dados.
 	 * </p>
-	 * @param imagem imagem com suas dimensões e cores.
+	 * @param img imagem com suas dimensões e cores.
 	 * @return estrutura de dados baseada na imagem.
 	 * @throws IllegalArgumentException se a imagem for nula.
 	 * @throws IllegalArgumentException se a largura da imagem for menor ou igual a zero.
 	 * @throws IllegalArgumentException se a altura da imagem for menor ou igual a zero.
 	 */
-	public Imagem gerarEstruturaImagem(BufferedImage imagem) {
-		return gdi.gerarImagem(imagem);
+	public Imagem gerarEstruturaImagem(BufferedImage img) {
+		return gdi.gerarImagem(img);
 	}
 
 	/**
@@ -61,7 +65,6 @@ public class Geim {
 	 * @param largura largura desejada para a estrutura da imagem.
 	 * @param altura altura desejada para a estrutura da imagem.
 	 * @return estrutura de dados baseada no tamanho fornecido.
-	 * @throws IllegalArgumentException se os valores de altura e largura forem menores ou iguais a zero.
 	 */
 	public Imagem gerarEstruturaImagem(int largura, int altura) {
 		return gdi.gerarImagem(largura, altura);
@@ -75,9 +78,6 @@ public class Geim {
 	 * @param r valor de intensidade da cor vermelha no pixel especificado.
 	 * @param g valor de intensidade da cor verde no pixel especificado.
 	 * @param b valor de intensidade da cor azul no pixel especificado.
-	 * @throws IllegalArgumentException se a estrutura de dados da imagem estiver nula.
-	 * @throws IllegalArgumentException se o valor de x ou y estiver fora dos índices válidos de acordo 
-	 * com o tamanho da estrutura da imagem.
 	 */
 	public void setCor(Imagem img, int x, int y, int r, int g, int b) {
 		gdi.setCor(img, x, y, r, g, b);
@@ -93,6 +93,26 @@ public class Geim {
 	 */
 	public void preencher(Imagem img, int r, int g, int b) {
 		gdi.preencher(img, r, g, b);
+	}
+
+	/**
+	 * Preenche todos os dados da estrutura de imagem com o mesmo valor
+	 * de cor RGB.
+	 * @param img {@code Imagem} base.
+     * @param rgb valor de cor rgb.
+	 */
+	public void preencher(Imagem img, int rgb) {
+		gdi.preencher(img, rgb);
+	}
+
+	/**
+	 * Preenche todos os dados da estrutura de imagem com o mesmo valor
+	 * de cor RGB.
+	 * @param img {@code Imagem} base.
+     * @param c cor desejada.
+	 */
+	public void preencher(Imagem img, Color c) {
+		gdi.preencher(img, c);
 	}
 
 	/**
@@ -132,9 +152,8 @@ public class Geim {
 	}
 
 	/**
-	 * Exibe via terminal os valores de intensidade de cor vermelha, verde e azul 
-	 * de cada elemento da estrutura da imagem.
-	 * @param img estrutura de dados da imagem.
+	 * Exibe a imagem em janela gráfica.
+	 * @param img {@code Imagem} base.
 	 */
 	public void desenhar(Imagem img, double escala) {
 		int w = (int) (img.largura() * escala);
@@ -159,11 +178,11 @@ public class Geim {
 	 *    linha = [x][y][r][g][b]
 	 * </pre>
 	 * Cada linha representará a informação de um pixel individual.
-	 * @param imagem imagem desejada
+	 * @param img imagem desejada
 	 * @return estrutura de dados baseada na imagem.
 	 */
-	public int[][] obterDadosImagem(BufferedImage imagem) {
-		return gdi.getDadosImagem(imagem);
+	public int[][] obterDadosImagem(BufferedImage img) {
+		return gdi.getDadosImagem(img);
 	}
 
 }
