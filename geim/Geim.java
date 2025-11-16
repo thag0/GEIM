@@ -3,7 +3,7 @@ package geim;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import geim.Imagem.Imagem;
+import geim.imagem.Imagem;
 import geim.desenho.DrawFrame;
 import geim.gerenciadores.GerenciadorArquivos;
 import geim.gerenciadores.GerenciadorDadosImagem;

@@ -3,7 +3,7 @@ package geim.gerenciadores;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import geim.Imagem.Imagem;
+import geim.imagem.Imagem;
 
 /**
  * Gerenciador de dados de imagem para o Geim

@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import geim.Imagem.Imagem;
-import geim.Imagem.Pixel;
+import geim.imagem.Imagem;
+import geim.imagem.Pixel;
 
 public class DrawPanel extends JPanel {
 

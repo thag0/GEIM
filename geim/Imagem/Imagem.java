@@ -1,4 +1,4 @@
-package geim.Imagem;
+package geim.imagem;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,7 +1,7 @@
 import java.awt.Color;
 
 import geim.Geim;
-import geim.Imagem.Imagem;
+import geim.imagem.Imagem;
 
 public class Main {
     static Geim geim = new Geim();

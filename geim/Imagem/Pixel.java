@@ -1,4 +1,4 @@
-package geim.Imagem;
+package geim.imagem;
 
 /**
  * Pixel RGB.
