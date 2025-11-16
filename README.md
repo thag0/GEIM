@@ -1,2 +1,2 @@
 # GEIM
-Biblioteca para manipulação de imagens
+GErenciador de IMagens
