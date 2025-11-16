@@ -2,6 +2,8 @@ package geim;
 
 import java.awt.image.BufferedImage;
 
+import geim.desenho.DrawFrame;
+
 /**
  * <p>
  *    Gerenciador de Imagens.
@@ -95,57 +97,50 @@ public class Geim {
 
 	/**
 	 * Captura o valor de cor vermelha de cada pixel da imagem.
-	 * @param imagem imagem com os valore de cores.
+	 * @param img imagem com os valore de cores.
 	 * @return matriz com o valor de cor vermelha de cada pixel.
 	 */
-	public int[][] obterVermelho(BufferedImage imagem) {
-		return gdi.getR(imagem);
+	public int[][] getR(BufferedImage img) {
+		return gdi.getR(img);
 	}
 
 	/**
 	 * Captura o valor de cor verde de cada pixel da imagem.
-	 * @param imagem imagem com os valore de cores.
+	 * @param img imagem com os valore de cores.
 	 * @return matriz com o valor de cor verde de cada pixel.
 	 */
-	public int[][] obterVerde(BufferedImage imagem) {
-		return gdi.getG(imagem);
+	public int[][] getG(BufferedImage img) {
+		return gdi.getG(img);
 	}
 
 	/**
 	 * Captura o valor de cor azul de cada pixel da imagem.
-	 * @param imagem imagem com os valore de cores.
+	 * @param img imagem com os valore de cores.
 	 * @return matriz com o valor de cor azul de cada pixel.
 	 */
-	public int[][] obterAzul(BufferedImage imagem) {
-		return gdi.getB(imagem);
+	public int[][] getB(BufferedImage img) {
+		return gdi.getB(img);
 	}
 
 	/**
 	 * Captura o valor de escala de cinza de cada pixel da imagem.
-	 * @param imagem imagem com os valore de cores.
+	 * @param img imagem com os valore de cores.
 	 * @return matriz com o valor de escala de cinza de cada pixel.
 	 */
-	public int[][] obterCinza(BufferedImage imagem) {
-		return gdi.getGray(imagem);
+	public int[][] getGray(BufferedImage img) {
+		return gdi.getGray(img);
 	}
 
 	/**
 	 * Exibe via terminal os valores de intensidade de cor vermelha, verde e azul 
 	 * de cada elemento da estrutura da imagem.
-	 * @param estruturaImagem estrutura de dados da imagem.
+	 * @param img estrutura de dados da imagem.
 	 */
-	public void exibirImagemRGB(Pixel[][] estruturaImagem) {
-		String buffer;
-
-		for (int y = 0; y < estruturaImagem.length; y++) {
-			for (int x = 0; x < estruturaImagem[y].length; x++) {
-				buffer = "[r: " + String.valueOf(estruturaImagem[y][x].getR()) + " ";
-				buffer += "g: " + String.valueOf(estruturaImagem[y][x].getG()) + " ";
-				buffer += "b: " + String.valueOf(estruturaImagem[y][x].getB()) + "] ";
-				System.out.print(buffer);
-			}
-			System.out.println();
-		}
+	public void desenhar(Imagem img, double escala) {
+		int w = (int) (img.largura() * escala);
+		int h = (int) (img.altura() * escala);
+		DrawFrame df = new DrawFrame(w, h);
+		df.exibir(img);
 	}
 
 	/**

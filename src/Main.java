@@ -18,6 +18,6 @@ public class Main {
             }
         }
         
-        geim.paraPNG(img, "img.png");
+        geim.desenhar(img, 1);
     }
 }
